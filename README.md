@@ -1,54 +1,62 @@
 # Workflow System
 
-Workflow System is an experimental personal workflow automation platform designed to capture tasks, study notes, ideas, and reminders from simple inputs and route them into a structured system.
+**Workflow System** es una plataforma experimental de automatización personal diseñada para capturar tareas, ideas, notas de estudio y recordatorios desde entradas simples, organizarlas y convertirlas progresivamente en flujos de trabajo útiles.
 
-The project is currently in active development. The current version is not the final architecture; it is the first functional foundation for a larger automation ecosystem that will evolve over time.
+El proyecto se encuentra en una etapa temprana de desarrollo. La base actual no representa la arquitectura final, sino el primer cimiento funcional de un sistema más amplio que seguirá cambiando, creciendo y refinándose con el tiempo.
 
-## Vision
+---
 
-The goal of Workflow System is to become a modular assistant-oriented backend capable of receiving information from different sources, classifying it, storing it, and preparing it for future workflows such as reminders, dashboards, study planning, task management, and integrations with external tools.
+## Visión
 
-At this stage, the system focuses on one essential idea: capture first, organize later.
+La visión de Workflow System es construir un backend modular orientado a la automatización personal, capaz de recibir información desde distintas fuentes, clasificarla, almacenarla y prepararla para futuros procesos como recordatorios, planificación de estudio, paneles de control, integración con herramientas externas y procesamiento asistido por inteligencia artificial.
 
-## Current Status
+---
 
-This repository contains the initial base of the system:
+## Estado actual
 
-- FastAPI backend
-- PostgreSQL database
-- SQLAlchemy data model
-- Telegram bot input channel
-- Docker-based local environment
-- Basic text classification for tasks, study items, and notes
+Actualmente, el repositorio contiene la base inicial del sistema:
 
-The current implementation should be understood as an early MVP foundation. Many components are intentionally simple and will be replaced, expanded, or redesigned as the system grows.
+* Backend con FastAPI.
+* Base de datos PostgreSQL.
+* Modelo de datos con SQLAlchemy.
+* Canal de entrada mediante bot de Telegram.
+* Entorno local con Docker y Docker Compose.
+* Clasificación básica de texto en tareas, estudio o notas.
 
-## What It Can Do Now
+La implementación actual es un MVP inicial. Muchos componentes son intencionalmente simples y podrán ser reemplazados, ampliados o rediseñados a medida que el sistema evolucione.
 
-Currently, the system can:
+---
 
-- Run locally with Docker Compose
-- Receive text messages through a Telegram bot
-- Send those messages to the FastAPI backend
-- Classify incoming text as `task`, `study`, or `note`
-- Store items in PostgreSQL
-- List stored items through the API
+## ¿Qué puede hacer por ahora?
 
-## Tech Stack
+En su estado actual, el sistema puede:
 
-- Python 3.11
-- FastAPI
-- Uvicorn
-- PostgreSQL 15
-- SQLAlchemy
-- Pydantic
-- Docker
-- Docker Compose
-- Telegram Bot API
+* Ejecutarse localmente con Docker Compose.
+* Recibir mensajes de texto desde un bot de Telegram.
+* Enviar esos mensajes al backend de FastAPI.
+* Clasificar el contenido como `task`, `study` o `note`.
+* Guardar los registros en PostgreSQL.
+* Listar los elementos almacenados desde la API.
 
-## Project Structure
+---
 
-```text
+## Stack tecnológico
+
+* Python 3.11
+* FastAPI
+* Uvicorn
+* PostgreSQL 15
+* SQLAlchemy
+* Pydantic
+* Docker
+* Docker Compose
+* Telegram Bot API
+
+---
+
+## Estructura del proyecto
+
+```
 workflow-system/
 ├── app/
 │   ├── core/
@@ -67,41 +75,47 @@ workflow-system/
 └── README.md
 ```
 
-## Architecture Overview
+---
 
-```text
-Telegram User
-    ↓
-Telegram Bot
-    ↓
-FastAPI Backend
-    ↓
-Classifier
-    ↓
-PostgreSQL Database
+## Arquitectura general
+
+```
+Usuario en Telegram
+        ↓
+Bot de Telegram
+        ↓
+Backend FastAPI
+        ↓
+Clasificador
+        ↓
+Base de datos PostgreSQL
 ```
 
-The Telegram bot acts as an input channel. The API is responsible for receiving and storing structured items. The classifier provides a simple first layer of organization.
+El bot de Telegram funciona como canal de entrada. La API recibe y estructura la información. El clasificador aplica una primera capa de organización. Finalmente, los datos se almacenan en PostgreSQL para ser utilizados por futuros módulos del sistema.
 
-## API Endpoints
+---
 
-### Health/root endpoint
+## Endpoints principales
 
-```http
+### Verificar que la API está activa
+
+```
 GET /
 ```
 
-Returns a basic confirmation that the backend is running.
+Devuelve una respuesta básica indicando que el backend está funcionando.
 
-### Create item
+---
 
-```http
+### Crear un elemento
+
+```
 POST /items
 ```
 
-Example request:
+Ejemplo de solicitud:
 
-```json
+```
 {
   "content": "estudiar bases de datos",
   "source": "manual",
@@ -109,9 +123,9 @@ Example request:
 }
 ```
 
-Example response:
+Ejemplo de respuesta:
 
-```json
+```
 {
   "id": 1,
   "content": "estudiar bases de datos",
@@ -122,110 +136,126 @@ Example response:
 }
 ```
 
-### List items
+---
 
-```http
+### Listar elementos
+
+```
 GET /items
 ```
 
-Returns all stored items.
+Devuelve todos los elementos almacenados.
 
-## Local Setup
+---
 
-### 1. Clone the repository
+## Ejecución local
 
-```bash
+### 1\. Clonar el repositorio
+
+```
 git clone https://github.com/jdcamargo2/workflow-system.git
 cd workflow-system
 ```
 
-### 2. Create the environment file
+### 2\. Crear el archivo de entorno
 
-```bash
+```
 cp .env.example .env
 ```
 
-Then edit `.env` and set your own values, especially:
+Luego edita el archivo `.env` y configura tus propios valores, especialmente:
 
-```env
-TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+```
+TELEGRAM_BOT_TOKEN=tu_token_de_telegram
 ```
 
-### 3. Start the system
+### 3\. Levantar el sistema
 
-```bash
+```
 docker compose up --build
 ```
 
-The API will be available at:
+La API estará disponible en:
 
-```text
+```
 http://127.0.0.1:8000
 ```
 
-FastAPI documentation will be available at:
+La documentación automática de FastAPI estará disponible en:
 
-```text
+```
 http://127.0.0.1:8000/docs
 ```
 
-## Environment Variables
+---
 
-| Variable | Description |
-| --- | --- |
-| `POSTGRES_USER` | PostgreSQL username |
-| `POSTGRES_PASSWORD` | PostgreSQL password |
-| `POSTGRES_DB` | PostgreSQL database name |
-| `DATABASE_URL` | SQLAlchemy database connection URL |
-| `TELEGRAM_BOT_TOKEN` | Telegram bot token |
-| `API_BASE_URL` | Internal URL used by the bot to call the API |
+## Variables de entorno
 
-## Development Notes
 
-This project is intentionally minimal right now. Some current decisions are temporary and expected to change, including:
+| Variable             | Descripción                                             |
+| ---------------------- | ---------------------------------------------------------- |
+| `POSTGRES_USER`      | Usuario de PostgreSQL                                    |
+| `POSTGRES_PASSWORD`  | Contraseña de PostgreSQL                                |
+| `POSTGRES_DB`        | Nombre de la base de datos                               |
+| `DATABASE_URL`       | URL de conexión usada por SQLAlchemy                    |
+| `TELEGRAM_BOT_TOKEN` | Token del bot de Telegram                                |
+| `API_BASE_URL`       | URL interna usada por el bot para comunicarse con la API |
 
-- Database tables are created with `Base.metadata.create_all()` instead of migrations.
-- The classifier is keyword-based and not yet intelligent.
-- There is no authentication layer yet.
-- There are no automated tests yet.
-- The bot uses polling instead of webhooks.
-- The data model is still very small.
+---
 
-These choices are acceptable for the current stage because the priority is to validate the system flow end to end.
+## Notas de desarrollo
+
+Este proyecto es intencionalmente simple en su estado actual. Algunas decisiones son temporales y probablemente cambiarán:
+
+* Las tablas se crean con `Base.metadata.create_all()` en lugar de migraciones.
+* El clasificador está basado en palabras clave.
+* Todavía no existe autenticación.
+* Todavía no hay pruebas automatizadas.
+* El bot usa polling en lugar de webhooks.
+* El modelo de datos todavía es pequeño.
+* La arquitectura aún está en exploración.
+
+---
 
 ## Roadmap
 
-Planned improvements include:
+Algunas mejoras previstas:
 
-- Add a proper README-driven setup flow
-- Add health checks for Docker services
-- Add database migrations with Alembic
-- Add automated tests
-- Add richer item types and metadata
-- Improve classification logic
-- Add reminders and scheduling
-- Add integrations with external productivity tools
-- Add a dashboard or admin interface
-- Add user/account support if needed
-- Improve security and production readiness
+* Añadir un flujo de instalación más detallado.
+* Agregar health checks en Docker Compose.
+* Incorporar migraciones con Alembic.
+* Añadir pruebas automatizadas.
+* Mejorar el modelo de datos.
+* Ampliar los tipos de elementos.
+* Mejorar la lógica de clasificación.
+* Añadir recordatorios y programación de tareas.
+* Integrar herramientas externas de productividad.
+* Crear una interfaz visual o panel administrativo.
+* Mejorar el manejo de errores.
+* Preparar una estructura más robusta para despliegue.
 
-## Production Readiness
+---
 
-This project is not production-ready yet.
+## Estado de producción
 
-Before any production deployment, the system will need:
+Workflow System **no está listo para producción**.
 
-- Secure secret management
-- Authentication and authorization
-- Proper database migrations
-- Logging and observability
-- Error handling improvements
-- Backup strategy
-- Deployment configuration
-- Tests and CI checks
+Antes de un despliegue real, el sistema necesitará:
 
-## Project Direction
+* Gestión segura de secretos.
+* Autenticación y autorización.
+* Migraciones de base de datos.
+* Mejor manejo de errores.
+* Logging y observabilidad.
+* Estrategia de respaldos.
+* Pruebas automatizadas.
+* Configuración de despliegue.
+* Revisión de seguridad.
 
-Workflow System is being developed as a long-term personal automation backend. Its purpose is not only to store tasks, but to become a flexible workflow layer that can connect study routines, personal planning, reminders, bots, dashboards, and future AI-assisted processing.
+---
 
-The current repository represents the foundation, not the destination.
+## Dirección del proyecto
+
+Workflow System está siendo desarrollado como una base de automatización personal a largo plazo. Su propósito no es únicamente guardar tareas, sino construir una capa flexible capaz de conectar rutinas de estudio, planificación personal, recordatorios, bots, paneles de control y futuros procesos asistidos por IA.
+
+La versión actual representa el punto de partida.
