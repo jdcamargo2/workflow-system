@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:15
+    container_name: workflow_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: workflow_app
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "127.0.0.1:8000:8000"
+    env_file:
+      - .env
+
+  bot:
+    build: .
+    container_name: workflow_bot
+    restart: unless-stopped
+    depends_on:
+      - app
+    env_file:
+      - .env
+    command: ["python", "-m", "app.telegram_bot"]
+
+volumes:
+  postgres_data:
